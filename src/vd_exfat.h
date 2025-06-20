@@ -193,8 +193,8 @@ extern const uint32_t EXFAT_VBR_CHECKSUM_SUFFIX;
 // ---------------------------------------------------------------
 // First FAT sector partial data (initial cluster chains)
 // ---------------------------------------------------------------
-extern const uint8_t exfat_fat0_sector_data[]; ///< First FAT sector data
-extern const size_t  exfat_fat0_sector_data_length; // (128 bytes)
+extern const uint32_t * const exfat_fat0_sector_data; ///< First FAT sector data
+extern const size_t   exfat_fat0_sector_data_len; // (128 bytes)
 
 // ---------------------------------------------------------------
 // Minimal up-case table

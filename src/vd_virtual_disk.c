@@ -279,14 +279,13 @@ static void gen_fat0_sector(uint32_t lba __unused,
 {
     // Zero-fill the buffer
     memset(buffer, 0, bufsize);
+    const uint8_t* data = (const uint8_t*)exfat_fat0_sector_data;
 
     // Copy the precomputed FAT0 beginning entries
-    if (offset < exfat_fat0_sector_data_length) {
-        uint32_t copy_len = exfat_fat0_sector_data_length - offset;
+    if (offset < exfat_fat0_sector_data_len) {
+        size_t copy_len = exfat_fat0_sector_data_len - offset;
         if (copy_len > bufsize) copy_len = bufsize;
-        memcpy(buffer,
-               exfat_fat0_sector_data + offset,
-               copy_len);
+        memcpy(buffer, data + offset, copy_len);
     }
 }
 
@@ -323,8 +322,8 @@ static void gen_upcs_sector(uint32_t lba, void* buffer, uint32_t offset, uint32_
         if (idx < exfat_upcase_table_len / sizeof(exfat_upcase_table[0])) {
             value = exfat_upcase_table[idx];
         } else {
-            // Identity mapping
-            value = (uint16_t)idx;
+            // Identity mapping or zero if compressed table
+            value = (EXFAT_UPCASE_TABLE_COMPRESSED? 0: (uint16_t)idx);
         }
         out[i] = value;
     }

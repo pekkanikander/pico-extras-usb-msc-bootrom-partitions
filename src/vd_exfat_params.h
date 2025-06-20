@@ -18,8 +18,9 @@
 #define VIRTUAL_DISK_SIZE              (0x40000000)
 #define EXFAT_VOLUME_LABEL_UTF16       u"PicoVD"
 
+#define EXFAT_UPCASE_TABLE_COMPRESSED  1 // Use compressed up-case table
+
 #define EXFAT_ALLOCATION_BITMAP_START_CLUSTER    2U
-#define EXFAT_UPCASE_TABLE_LENGTH_CLUSTERS      32U
 #define EXFAT_ROOT_DIR_LENGTH_CLUSTERS           3U
 
 // -----------------------------------------------------------------------------
@@ -79,6 +80,8 @@ _Static_assert(EXFAT_ALLOCATION_BITMAP_LENGTH_CLUSTERS == 8,
 // Up-case Table region starts at after Allocation Bitmap, so its LBA is:
 #define EXFAT_UPCASE_TABLE_START_LBA       \
     (EXFAT_ALLOCATION_BITMAP_START_LBA + EXFAT_ALLOCATION_BITMAP_LENGTH_SECTORS)
+#define EXFAT_UPCASE_TABLE_LENGTH_CLUSTERS (\
+    (EXFAT_UPCASE_TABLE_COMPRESSED ? 1U : 32U)) // 1 clusters for compressed, 32 for uncompressed
 #define EXFAT_UPCASE_TABLE_LENGTH_SECTORS  \
     (EXFAT_UPCASE_TABLE_LENGTH_CLUSTERS * EXFAT_SECTORS_PER_CLUSTER)
 #define EXFAT_UPCASE_TABLE_START_CLUSTER   \
